@@ -1,0 +1,75 @@
+xml>
+  <variables>
+    <variable type="" id="stake_var">Stake</variable>
+    <variable type="" id="loss_var">Loss</variable>
+    <variable type="" id="profit_var">Target Profit</variable>
+    <variable type="" id="win_count_var">Win Count</variable>
+    <variable type="" id="max_wins_var">Max Wins</variable>
+  </variables>
+  <block type="trade" id="trade">
+    <field name="MARKET_LIST">synthetic_index</field>
+    <field name="SUBMARKET_LIST">random_index</field>
+    <field name="SYMBOL_LIST">R_100</field>
+    <field name="TRADETYPECAT_LIST">digits</field>
+    <field name="TRADETYPE_LIST">overunder</field>
+    <field name="TYPE_LIST">both</field>
+    <field name="CANDLEINTERVAL_LIST">60</field>
+    <field name="RESTARTONERROR">TRUE</field>
+    <statement name="INITIALIZATION">
+      <block type="variables_set" id="init_loss">
+        <field name="VAR" id="loss_var">Loss</field>
+        <value name="VALUE">
+          <block type="math_number">
+            <field name="NUM">1000</field>
+          </block>
+        </value>
+      </block>
+      <block type="variables_set" id="init_profit">
+        <field name="VAR" id="profit_var">Target Profit</field>
+        <value name="VALUE">
+          <block type="math_number">
+            <field name="NUM">607</field>
+          </block>
+        </value>
+      </block>
+      <block type="variables_set" id="init_stake">
+        <field name="VAR" id="stake_var">Stake</field>
+        <value name="VALUE">
+          <block type="math_number">
+            <field name="NUM">2</field>
+          </block>
+        </value>
+      </block>
+    </statement>
+    <statement name="AFTERPURCHASE_STACK">
+      <block type="controls_if" id="check_win">
+        <mutation else="1"></mutation>
+        <value name="IF0">
+          <block type="contract_check_result">
+            <field name="CHECK_RESULT">win</field>
+          </block>
+        </value>
+        <statement name="DO0">
+          <block type="notify" id="notify_win">
+            <field name="NOTIFICATION_TYPE">success</field>
+            <value name="MESSAGE">
+              <block type="text_join">
+                <mutation items="2"></mutation>
+                <value name="ADD0">
+                  <block type="text">
+                    <field name="TEXT">Win: </field>
+                  </block>
+                </value>
+                <value name="ADD1">
+                  <block type="read_details">
+                    <field name="DETAIL_INDEX">4</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+          </block>
+        </statement>
+      </block>
+    </statement>
+  </block>
+</xml>
